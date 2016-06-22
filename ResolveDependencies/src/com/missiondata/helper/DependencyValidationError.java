@@ -1,5 +1,10 @@
 package com.missiondata.helper;
 
+/**
+ * Exception throw in case of invalid inputs 
+ * @author radyog
+ *
+ */
 public class DependencyValidationError extends Throwable{
 
 	private static final long serialVersionUID = 1L;
@@ -17,7 +22,6 @@ public class DependencyValidationError extends Throwable{
 	
 	@Override
 	public void printStackTrace() {
-		// TODO Auto-generated method stub
 		System.out.println(errorMsg);
 		super.printStackTrace();
 	}

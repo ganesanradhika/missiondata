@@ -16,6 +16,11 @@ import java.util.Set;
 
 import com.missiondata.model.Task;
 
+/**
+ * Performs read-write operation on the input/output files.
+ * @author radyog
+ *
+ */
 public class FileHandler {
 	
 	public List<String> readInput(){

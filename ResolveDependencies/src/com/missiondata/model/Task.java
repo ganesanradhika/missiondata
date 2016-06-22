@@ -3,6 +3,11 @@ package com.missiondata.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines a Task. Created from the input file.
+ * @author radyog
+ *
+ */
 public class Task {
 
 	private String taskName;
@@ -44,13 +49,14 @@ public class Task {
 		
 		return sb.toString();
 	}
+
 	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return "Task-" + getTaskName();
 	}
-		
+	
 	@Override
 	public boolean equals(Object arg0) {
 		// TODO Auto-generated method stub
