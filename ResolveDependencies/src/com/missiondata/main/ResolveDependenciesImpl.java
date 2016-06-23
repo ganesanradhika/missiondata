@@ -17,8 +17,8 @@ import com.missiondata.model.Task;
  * data given in the input file.
  * 
  * This program takes runtime arguments.
- * 		args[0] - Input file name.
- * 		args[1] - Output file name.
+ * 		args[0] - Input file name (full path). ex:- c:\results\input.txt
+ * 		args[1] - Output file name. (full path). ex:- c:\results\output.txt
  * 
  * Input files accepts characters, words, number and special characters. 
  * Leading and trailing spaces will be trimmed by the program.
@@ -59,11 +59,8 @@ public class ResolveDependenciesImpl {
 	}
 
 	/**
-	 * @param rdi
-	 * @param tasks
-	 * @param dependencies
-	 * @param inputLines
-	 * @throws DependencyException 
+	 * Reads input file and initializes tasks & dependencies.
+	 * @throws DependencyException if no dependencies are defined in the input file.
 	 */
 	private void initializeTasksAndDependencies() throws DependencyException {
 		
@@ -82,10 +79,8 @@ public class ResolveDependenciesImpl {
 	}
     
 	/**
-	 * Method to calculate transitive dependencies.
-	 * 
-	 * @param uniqueTasks
-	 * @param tasks
+	 * Calculates dependencies.
+	 * @return output in String format.
 	 */
 	private String calculateTransitiveDependencies() {
 		
@@ -110,10 +105,9 @@ public class ResolveDependenciesImpl {
 	
 	/**
 	 * Process result to the required format.
-	 * 
 	 * @param dependentTask
 	 * @param result
-	 * @return
+	 * @return formatted String.
 	 */
 	private String formatResult(String dependentTask , String result) {
 		
@@ -137,9 +131,7 @@ public class ResolveDependenciesImpl {
 	/**
 	 * Create Tasks based on the input file.
 	 * 
-	 * @param tasks
-	 * @param uniqueTasks
-	 * @param split
+	 * @param split - each line in input file in String array 
 	 */
 	private void initTasks(String[] split) {
 		for (int i = 0; i < split.length; i++) {
@@ -162,9 +154,7 @@ public class ResolveDependenciesImpl {
 	/**
 	 * Create Dependencies objects and link tasks to it.
 	 * 
-	 * @param dependencies
-	 * @param tasks
-	 * @param split
+	 * @param split - - each line in input file in String array
 	 */
 	private void assignDependencies(String[] split) {
 		Task assignDependency = null;
