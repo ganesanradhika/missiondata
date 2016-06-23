@@ -46,13 +46,13 @@ public class FileHandler {
 	/**
 	 * Reads from the input file in the class path.
 	 * @return 
-	 * @throws DependencyException 
+	 * @throws DependencyValidationException 
 	 */
-	public List<String> readInput(String inputFile) throws DependencyException{
+	public List<String> readInput(String inputFile) throws DependencyValidationException{
 		
 		File file = new File(getInputFileName());
 		if(!file.exists()){
-			throw new DependencyException(DependencyException.FILE_NOT_FOUND);
+			throw new DependencyValidationException(DependencyValidationException.FILE_NOT_FOUND);
 		}
 		
 		List<String> inputLines = new ArrayList<>();
@@ -93,5 +93,12 @@ public class FileHandler {
         } catch (IOException e) {
         	e.printStackTrace();
         }
+		
 	}
+
+
+
+
+	
+	
 }

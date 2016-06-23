@@ -7,22 +7,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.missiondata.helper.DependencyException;
+import com.missiondata.helper.DependencyValidationException;
 import com.missiondata.helper.FileHandler;
 import com.missiondata.model.Dependency;
 import com.missiondata.model.Task;
 
 /**
- * This class contains logic to resolve transitive dependencies based on 
+ * Main method with logic to resolve transitive dependencies based on 
  * data given in the input file.
  * 
  * This program takes runtime arguments.
  * 		args[0] - Input file name.
  * 		args[1] - Output file name.
- * 
- * Input files accepts characters, words, number and special characters. 
- * Leading and trailing spaces will be trimmed by the program.
- * 
  * @author Radhika Ganesan
  *
  */
@@ -36,7 +32,7 @@ public class ResolveDependenciesImpl {
 	
 	private static FileHandler ifr = null;
 	
-	public static void main(String args[]) throws DependencyException{
+	public static void main(String args[]) throws DependencyValidationException{
 		
 		ResolveDependenciesImpl rdi = new ResolveDependenciesImpl();
 		
@@ -44,8 +40,10 @@ public class ResolveDependenciesImpl {
 		try {
 			ifr = new FileHandler(args[0], args[1]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new DependencyException(DependencyException.INCORRECT_ARG);
+			throw new DependencyValidationException(DependencyValidationException.INCORRECT_ARG);
 		}
+		
+		
 		
 		// Read file and instantiate objects
 		rdi.initializeTasksAndDependencies();
@@ -63,9 +61,9 @@ public class ResolveDependenciesImpl {
 	 * @param tasks
 	 * @param dependencies
 	 * @param inputLines
-	 * @throws DependencyException 
+	 * @throws DependencyValidationException 
 	 */
-	private void initializeTasksAndDependencies() throws DependencyException {
+	private void initializeTasksAndDependencies() throws DependencyValidationException {
 		
 		List<String> inputLines = ifr.readInput(ifr.getInputFileName());
 		for (String line : inputLines) {
@@ -74,10 +72,6 @@ public class ResolveDependenciesImpl {
 			initTasks(split);
 			assignDependencies(split);
 			
-		}
-		
-		if(dependencies.isEmpty()){
-			throw new DependencyException(DependencyException.NO_DEPENDENCIES);
 		}
 	}
     
@@ -97,10 +91,9 @@ public class ResolveDependenciesImpl {
 			if(result.trim().isEmpty()){
 				continue;
 			}
-			// format result to get the required formatting
+			
 			String formattedStr = formatResult(taskName, result);
 			finalResult.append(formattedStr);
-			//reset traversed flag in each Task
 			tasks.get(taskName).resetTraversalFlag();
 		}
 
@@ -144,12 +137,12 @@ public class ResolveDependenciesImpl {
 	private void initTasks(String[] split) {
 		for (int i = 0; i < split.length; i++) {
 			
-			String trimmedValue = split[i].trim();
-			if(trimmedValue.isEmpty()){
+			String trimmedEntry = split[i].trim();
+			if(trimmedEntry.isEmpty()){
 				continue;
 			}
 			
-			Task task = new Task(trimmedValue);
+			Task task = new Task(trimmedEntry);
 			// If the task is already present in the hash map, do not overwrite
 			if(tasks.containsKey(task.getTaskName())){
 				continue;
@@ -170,15 +163,15 @@ public class ResolveDependenciesImpl {
 		Task assignDependency = null;
 		for (int i = 0; i < split.length; i++) {
 			
-			String trimmedValue = split[i].trim();
-			if(trimmedValue.isEmpty()){
+			String trimmedEntry = split[i].trim();
+			if(trimmedEntry.isEmpty()){
 				continue;
 			}else if(assignDependency == null){
-				assignDependency = tasks.get(trimmedValue);
+				assignDependency = tasks.get(trimmedEntry);
 				continue;
 			}
 			
-			Task targetTask = tasks.get(trimmedValue);
+			Task targetTask = tasks.get(trimmedEntry);
 			Dependency d = new Dependency(assignDependency, targetTask);
 			dependencies.put(d.toString(), d);
 			assignDependency.getDependencies().add(d);
